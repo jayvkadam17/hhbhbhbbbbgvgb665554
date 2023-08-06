@@ -1,0 +1,188 @@
+npx create-react-app image-gallery
+cd image-gallery
+
+npm install axios react-router-dom
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import axios from 'axios';
+import './App.css';
+
+function Gallery() {
+  const [images, setImages] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/photos?_limit=20');
+        setImages(response.data);
+      } catch (error) {
+        console.error('Failed to fetch images:', error.message);
+      }
+    };
+
+    fetchImages();
+  }, []);
+
+  return (
+    <div className="gallery">
+      <h1>Image Gallery</h1>
+      {images.map((image) => (
+        <Link to={`/image/${image.id}`} key={image.id} className="image-link">
+          <img src={image.thumbnailUrl} alt={image.title} />
+          <p>{image.title}</p>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+function SingleImage() {
+  const { imageId } = React.useParams();
+  const [image, setImage] = React.useState(null);
+
+  React.useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const response = await axios.get(`https://jsonplaceholder.typicode.com/photos/${imageId}`);
+        setImage(response.data);
+      } catch (error) {
+        console.error('Failed to fetch image:', error.message);
+      }
+    };
+
+    fetchImage();
+  }, [imageId]);
+
+  if (!image) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="single-image">
+      <h2>{image.title}</h2>
+      <img src={image.url} alt={image.title} />
+      <p>{image.description}</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Gallery} />
+        <Route path="/image/:imageId" component={SingleImage} />
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;
+//////////////////////////////////////
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.image-link {
+  display: block;
+  text-align: center;
+  color: #333;
+  text-decoration: none;
+}
+
+.image-link img {
+  max-width: 100%;
+  height: auto;
+}
+
+.single-image {
+  text-align: center;
+}
+
+.single-image img {
+  max-width: 100%;
+  height: auto;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.image-link {
+  display: block;
+  text-align: center;
+  color: #333;
+  text-decoration: none;
+}
+
+.image-link img {
+  max-width: 100%;
+  height: auto;
+}
+
+.single-image {
+  text-align: center;
+}
+
+.single-image img {
+  max-width: 100%;
+  height: auto;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.image-link {
+  display: block;
+  text-align: center;
+  color: #333;
+  text-decoration: none;
+}
+
+.image-link img {
+  max-width: 100%;
+  height: auto;
+}
+
+.single-image {
+  text-align: center;
+}
+
+.single-image img {
+  max-width: 100%;
+  height: auto;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.image-link {
+  display: block;
+  text-align: center;
+  color: #333;
+  text-decoration: none;
+}
+
+.image-link img {
+  max-width: 100%;
+  height: auto;
+}
+
+.single-image {
+  text-align: center;
+}
+
+.single-image img {
+  max-width: 100%;
+  height: auto;
+}
+v//////////////////////////////////////////////////////////////////////////////
+npm start
